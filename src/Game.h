@@ -9,7 +9,7 @@
 class Game {
     public:
         Game();
-        bool Inizialise();
+        bool Initialize();
         void RunLoop();
         void ShutDown();
 
@@ -27,7 +27,7 @@ class Game {
         void UpdateGame();
         void GenerateOutput();
 
-        std::unordered_map<std::string, SDL_Texture *> textures;
+        std::unordered_map<std::string, SDL_Texture*> textures;
         std::vector<class Actor*> actors;
         std::vector<class SpriteComponent*> sprites;
 

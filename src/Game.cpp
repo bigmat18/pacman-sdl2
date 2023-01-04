@@ -2,13 +2,13 @@
 #include "Global.h"
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL.h>
+#include <iostream>
 
 Game::Game() : window(nullptr),
                renderer(nullptr),
                isRunning(true) {}
 
-
-bool Game::Inizialise() {
+bool Game::Initialize() {
     scc(SDL_Init(SDL_INIT_VIDEO));
     this->window = (SDL_Window*)scp(SDL_CreateWindow("Pacman",
                                                      SCREEN_X_POS,
@@ -67,6 +67,8 @@ void Game::UpdateGame() {
 
     float deltaTime = (SDL_GetTicks() - ticksCount) / 1000.0f;
 
+    std::cout << "FPS: " << 1.0f / deltaTime << std::endl;
+
     ticksCount = SDL_GetTicks();
 
     if (deltaTime > 0.05f)
@@ -82,3 +84,7 @@ void Game::GenerateOutput() {
 
     SDL_RenderPresent(renderer);
 }
+
+void Game::LoadData() {}
+
+void Game::UnloadData() {}
