@@ -25,5 +25,9 @@ void *scp(void *ptr){
     return ptr;
 }
 
+typedef struct {
+    float x;
+    float y;
+} Vector2D;
 
 #endif

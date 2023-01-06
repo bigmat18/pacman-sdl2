@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "Global.h"
+#include "actors/Actor.h"
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL.h>
 #include <iostream>
@@ -8,7 +9,7 @@ Game::Game() : window(nullptr),
                renderer(nullptr),
                isRunning(true) {}
 
-bool Game::Initialize() {
+bool Game::initialize() {
     scc(SDL_Init(SDL_INIT_VIDEO));
     this->window = (SDL_Window*)scp(SDL_CreateWindow("Pacman",
                                                      SCREEN_X_POS,
@@ -26,30 +27,29 @@ bool Game::Initialize() {
         return false;
     }
 
-    LoadData();
+    this->loadData();
     this->ticksCount = SDL_GetTicks();
 
     return true;
 }
 
-void Game::ShutDown() {
-    UnloadData();
+void Game::shutdown(){
+    this->unloadData();
     SDL_DestroyWindow(this->window);
     SDL_DestroyRenderer(this->renderer);
     IMG_Quit();
     SDL_Quit();
 }
 
-void Game::RunLoop() {
-    while (isRunning)
-    {
-        ProcessInput();
-        UpdateGame();
-        GenerateOutput();
+void Game::runLoop() {
+    while (isRunning) {
+        this->processInput();
+        this->updateGame();
+        this->generateOutput();
     }
 }
 
-void Game::ProcessInput() {
+void Game::processInput() {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -62,7 +62,7 @@ void Game::ProcessInput() {
     if (state[SDL_SCANCODE_ESCAPE]) isRunning = false;
 }
 
-void Game::UpdateGame() {
+void Game::updateGame() {
     while (!SDL_TICKS_PASSED(SDL_GetTicks(), ticksCount + 16));
 
     float deltaTime = (SDL_GetTicks() - ticksCount) / 1000.0f;
@@ -75,7 +75,7 @@ void Game::UpdateGame() {
         deltaTime = 0.05f;
 }
 
-void Game::GenerateOutput() {
+void Game::generateOutput() {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
@@ -85,6 +85,18 @@ void Game::GenerateOutput() {
     SDL_RenderPresent(renderer);
 }
 
-void Game::LoadData() {}
+void Game::loadData() {}
 
-void Game::UnloadData() {}
+void Game::unloadData() {}
+
+void Game::addActor(Actor* actor) {
+    this->actors.emplace_back(actor);
+}
+
+void Game::removeActor(Actor* actor) {
+    auto iterator = std::find(this->actors.begin(), this->actors.end(), actor);
+    if(iterator != actors.end()) {
+        std::iter_swap(iterator, actors.end() - 1);
+        actors.pop_back();
+    }
+}

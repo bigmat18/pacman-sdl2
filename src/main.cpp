@@ -2,9 +2,9 @@
 
 int main(void){
     Game game;
-    bool success = game.Initialize();
-    if (success) game.RunLoop();
+    bool success = game.initialize();
+    if (success) game.runLoop();
 
-    game.ShutDown();
+    game.shutdown();
     return 0;
 }

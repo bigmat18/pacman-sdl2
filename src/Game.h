@@ -9,23 +9,23 @@
 class Game {
     public:
         Game();
-        bool Initialize();
-        void RunLoop();
-        void ShutDown();
+        bool initialize();
+        void runLoop();
+        void shutdown();
 
-        void AddActor(class Actor *actor);
-        void RemoveActor(class Actor *actor);
+        void addActor(class Actor *actor);
+        void removeActor(class Actor *actor);
 
-        void AddSprite(class SpriteComponent *sprite);
-        void RemoveSprite(class SpriteComponent *sprite);
+        void addSprite(class SpriteComponent *sprite);
+        void removeSprite(class SpriteComponent *sprite);
 
-        void LoadData();
-        void UnloadData();
+        void loadData();
+        void unloadData();
 
     private:
-        void ProcessInput();
-        void UpdateGame();
-        void GenerateOutput();
+        void processInput();
+        void updateGame();
+        void generateOutput();
 
         std::unordered_map<std::string, SDL_Texture*> textures;
         std::vector<class Actor*> actors;
