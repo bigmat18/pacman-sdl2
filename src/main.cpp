@@ -10,19 +10,25 @@ int main(void){
         return EXIT_FAILURE;
     }
 
-    unsigned char character = 0;
+    char character;
+    std::vector<std::vector<int>> MAP;
+    std::vector<int> row;
 
     while (!feof(file)){
         character = getc(file);
-        std::cout << character << "-";
+        if(character != '\n'){
+            row.push_back(atoi(&character));
+        }else{
+            MAP.push_back(row);
+            row.clear();
+        }
     }
-    std::cout << std::endl;
     fclose(file);
 
-    Game game;
-    bool success = game.initialize();
-    if (success) game.runLoop();
+    Game *game = new Game(&MAP);
+    bool success = game->initialize();
+    if (success) game->runLoop();
 
-    game.shutdown();
+    game->shutdown();
     return 0;
 }

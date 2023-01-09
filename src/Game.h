@@ -8,7 +8,7 @@
 
 class Game {
     public:
-        Game();
+        Game(std::vector<std::vector<int>> *map);
         bool initialize();
         void runLoop();
         void shutdown();
@@ -30,6 +30,7 @@ class Game {
         std::unordered_map<std::string, SDL_Texture*> textures;
         std::vector<class Actor*> actors;
         std::vector<class SpriteComponent*> sprites;
+        const std::vector<std::vector<int>>* MAP;
 
         SDL_Window *window;
         SDL_Renderer *renderer;

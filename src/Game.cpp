@@ -5,9 +5,10 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 
-Game::Game() : window(nullptr),
-               renderer(nullptr),
-               isRunning(true) {}
+Game::Game(std::vector<std::vector<int>> *map) : MAP(map),
+                                                 window(nullptr),
+                                                 renderer(nullptr),
+                                                 isRunning(true) {}
 
 bool Game::initialize() {
     scc(SDL_Init(SDL_INIT_VIDEO));
