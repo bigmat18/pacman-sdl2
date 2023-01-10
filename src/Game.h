@@ -2,13 +2,14 @@
 #include <vector>
 #include <unordered_map>
 #include <string>
+#include "MapHandler.h"
 
 #ifndef GAME_H
 #define GAME_H
 
 class Game {
     public:
-        Game(std::vector<std::vector<int>> *map);
+        Game();
         bool initialize();
         void runLoop();
         void shutdown();
@@ -30,8 +31,8 @@ class Game {
         std::unordered_map<std::string, SDL_Texture*> textures;
         std::vector<class Actor*> actors;
         std::vector<class SpriteComponent*> sprites;
-        const std::vector<std::vector<int>>* MAP;
-
+        
+        MapHandler *map;
         SDL_Window *window;
         SDL_Renderer *renderer;
         Uint32 ticksCount;

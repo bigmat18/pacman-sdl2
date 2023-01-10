@@ -1,14 +1,15 @@
 #include "Game.h"
 #include "Global.h"
+#include "MapHandler.h"
 #include "actors/Actor.h"
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL.h>
 #include <iostream>
 
-Game::Game(std::vector<std::vector<int>> *map) : MAP(map),
-                                                 window(nullptr),
-                                                 renderer(nullptr),
-                                                 isRunning(true) {}
+Game::Game() : map(nullptr),
+               window(nullptr),
+               renderer(nullptr),
+               isRunning(true) {}
 
 bool Game::initialize() {
     scc(SDL_Init(SDL_INIT_VIDEO));
@@ -79,6 +80,7 @@ void Game::updateGame() {
 void Game::generateOutput() {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
+    this->map->drawMap(renderer);
 
     for (auto sprite : sprites){
     }
@@ -86,7 +88,9 @@ void Game::generateOutput() {
     SDL_RenderPresent(renderer);
 }
 
-void Game::loadData() {}
+void Game::loadData() {
+    this->map = new MapHandler("map.txt");
+}
 
 void Game::unloadData() {}
 

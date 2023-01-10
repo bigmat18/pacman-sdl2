@@ -1,4 +1,5 @@
 #pragma once
+#include <SDL2/SDL.h>
 #include <vector>
 #include <string>
 
@@ -8,10 +9,12 @@
 class MapHandler {
     public:
         MapHandler(std::string filename);
-        ~MapHandler();
-
+        void drawMap(SDL_Renderer* renderer);
     private:
-        std::vector<std::vector<int>> *map;
+        void createMap();
+        void drawWall(SDL_Renderer *renderer, int x, int y, SDL_Color color);
+
+        std::vector<std::vector<int>> map;
         const std::string FILENAME;
 };
 #endif
