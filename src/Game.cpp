@@ -81,6 +81,15 @@ void Game::generateOutput() {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
     this->map->drawMap(renderer);
+    // SDL_Rect src = {17*12, 4*12, 12, 12};
+    // SDL_Rect dest = {0, 0, 40, 40};
+
+    // SDL_Texture* texture = this->getTexture("assets/spritemap-384.png");
+
+    // SDL_RenderCopy(renderer, 
+    //                texture,
+    //                &src,
+    //                &dest);
 
     for (auto sprite : sprites){
     }
@@ -89,7 +98,7 @@ void Game::generateOutput() {
 }
 
 void Game::loadData() {
-    this->map = new MapHandler("map.txt");
+    this->map = new MapHandler(this, "map.txt");
 }
 
 void Game::unloadData() {}
@@ -104,4 +113,23 @@ void Game::removeActor(Actor* actor) {
         std::iter_swap(iterator, actors.end() - 1);
         actors.pop_back();
     }
+}
+
+SDL_Texture *Game::getTexture(const std::string &fileName){
+    SDL_Texture* texture = nullptr;
+    auto iter = this->textures.find(fileName);
+
+    if (iter != this->textures.end()) texture = iter->second;
+    else {
+        SDL_Surface *surf = (SDL_Surface*)scp(IMG_Load(fileName.c_str()));
+
+        if(!surf) return nullptr;
+
+        texture = (SDL_Texture*)scp(SDL_CreateTextureFromSurface(renderer, surf));
+        if (!texture) return nullptr;
+
+        SDL_FreeSurface(surf);
+        this->textures.emplace(fileName.c_str(), texture);
+    }
+    return texture;
 }

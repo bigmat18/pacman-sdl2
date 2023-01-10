@@ -8,13 +8,15 @@
 
 class MapHandler {
     public:
-        MapHandler(std::string filename);
+        MapHandler(class Game* game, std::string filename);
         void drawMap(SDL_Renderer* renderer);
     private:
         void createMap();
         void drawWall(SDL_Renderer *renderer, int x, int y, SDL_Color color);
 
         std::vector<std::vector<int>> map;
-        const std::string FILENAME;
+        const std::string FILENAME; 
+        SDL_Texture *texture;
+        Game* game;
 };
 #endif

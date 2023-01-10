@@ -1,10 +1,15 @@
 #include "MapHandler.h"
 #include "Global.h"
+#include "Game.h"
 #include <string>
 #include <iostream>
 
-MapHandler::MapHandler(std::string filename) : FILENAME(filename) 
-{this->createMap();}
+MapHandler::MapHandler(Game *game, std::string filename) : FILENAME(filename),
+                                                           game(game)
+{
+    this->createMap();
+    this->texture = this->game->getTexture("assets/spritemap-384.png");
+}
 
 void MapHandler::createMap() {
     FILE *file = (FILE*)scp(fopen(this->FILENAME.c_str(), "r"));

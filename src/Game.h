@@ -22,8 +22,9 @@ class Game {
 
         void loadData();
         void unloadData();
+        SDL_Texture* getTexture(const std::string &fileName);
 
-    private:
+    private: 
         void processInput();
         void updateGame();
         void generateOutput();
