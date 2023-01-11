@@ -9,11 +9,12 @@ const unsigned int TEXTURE_CELL_SIZE = 16;
 MapHandler::MapHandler(Game *game, std::string filename) : FILENAME(filename),
                                                            game(game)
 {
-    this->createMap();
+    this->createMapMatrix();
     this->texture = this->game->getTexture("assets/Map16.png");
+    this->createReactsMatrix();
 }
 
-void MapHandler::createMap() {
+void MapHandler::createMapMatrix(){
     FILE *file = (FILE*)scp(fopen(this->FILENAME.c_str(), "r"));
 
     char character;
@@ -28,13 +29,22 @@ void MapHandler::createMap() {
             row.clear();
         }
     }
+    row.pop_back();
     this->map.push_back(row);
     fclose(file);
 }
 
+void MapHandler::createReactsMatrix(){
+    for(int i=0; i<this->map.size(); i++){
+        for(int j=0; j<this->map[i].size(); j++){
+            if(this->map[i][j]) this->rects.insert({ (Vector2D){j, i}, this->getSourceRect(j, i) });
+        }
+    }
+}
+
 void MapHandler::drawMap(SDL_Renderer* renderer){
-    for(unsigned int i=0; i<this->map.size(); i++){
-        for(unsigned int j=0; j<this->map[i].size(); j++){
+    for(int i=0; i<this->map.size(); i++){
+        for(int j=0; j<this->map[i].size(); j++){
             switch(this->map[i][j]){
                 case 1: {
                     this->drawWall(renderer, j, i, (SDL_Color){HEX_COLOR(MAP_COLOR)});
@@ -49,32 +59,51 @@ void MapHandler::drawMap(SDL_Renderer* renderer){
 }
 
 void MapHandler::drawWall(SDL_Renderer *renderer, int x, int y, SDL_Color color){
-    SDL_Rect srcRect = this->getSourceRect(x, y);
     SDL_Rect destRect = {static_cast<int>(CELL_SIZE * x), 
                          static_cast<int>(CELL_SIZE * y), 
-                         static_cast<int>(CELL_SIZE / 1), 
-                         static_cast<int>(CELL_SIZE / 1)};
-    scc(SDL_RenderCopy(renderer, this->texture, &srcRect, &destRect));
+                         static_cast<int>(CELL_SIZE), 
+                         static_cast<int>(CELL_SIZE)};
+    std::map<Vector2D, SDL_Rect*>::iterator iterator = this->rects.find((Vector2D){x,y});
+    scc(SDL_RenderCopy(renderer, this->texture, (SDL_Rect*)iterator, &destRect));
 }
 
-SDL_Rect MapHandler::getSourceRect(int x, int y){
-    if (y > 0 && y < this->map.size() && this->map[y - 1][x] == 1 && this->map[y + 1][x] == 1)
-        return (SDL_Rect){TEXTURE_CELL_SIZE * 10, 0, TEXTURE_CELL_SIZE, TEXTURE_CELL_SIZE};
+SDL_Rect* MapHandler::getSourceRect(int x, int y){
+    int pos = 0;
 
-    // else if (x > 0 && this->map[y][x - 1] == 1 && this->map[y][x + 1] == 1)
-    //     return (SDL_Rect){TEXTURE_CELL_SIZE * 7, 0, TEXTURE_CELL_SIZE, TEXTURE_CELL_SIZE};
+    if (y > 0 && y < this->map.size() - 1 && x > 0 && x < this->map[y].size() - 1 && 
+        this->map[y - 1][x] && this->map[y + 1][x] && this->map[y][x - 1] && this->map[y][x + 1]) pos = TEXTURE_CELL_SIZE * 15;
 
-    // else if (this->map[y + 1][x] == 1 && this->map[y][x + 1] == 1)
-    //     return (SDL_Rect){TEXTURE_CELL_SIZE * 6, 0, TEXTURE_CELL_SIZE, TEXTURE_CELL_SIZE};
+    else if (y > 0 && x > 0 && x < this->map[y].size() - 1 && 
+            this->map[y - 1][x] && this->map[y][x - 1] && this->map[y][x + 1]) pos = TEXTURE_CELL_SIZE * 14;
 
-    // else if (x > 0 && this->map[y][x - 1] == 1 && this->map[y + 1][x] == 1)
-    //     return (SDL_Rect){TEXTURE_CELL_SIZE * 4, 0, TEXTURE_CELL_SIZE, TEXTURE_CELL_SIZE};
+    else if (y < this->map.size() - 1 && x > 0 && x < this->map[y].size() - 1 && 
+            this->map[y + 1][x] && this->map[y][x - 1] && this->map[y][x + 1]) pos = TEXTURE_CELL_SIZE * 7;
 
-    // else if (y > 0 && this->map[y - 1][x] == 1 && this->map[y][x + 1] == 1)
-    //     return (SDL_Rect){TEXTURE_CELL_SIZE * 13, 0, TEXTURE_CELL_SIZE, TEXTURE_CELL_SIZE};
+    else if (y > 0 && x > 0 && y < this->map.size() - 1 &&
+             this->map[y - 1][x] && this->map[y + 1][x] && this->map[y][x - 1]) pos = TEXTURE_CELL_SIZE * 11;
 
-    // else if (y > 0 && x > 0 && this->map[y - 1][x] == 1 && this->map[y][x - 1] == 1)
-    //     return (SDL_Rect){TEXTURE_CELL_SIZE * 11, 0, TEXTURE_CELL_SIZE, TEXTURE_CELL_SIZE};
+    else if (y > 0 && y < this->map.size() - 1 && x < this->map[y].size() - 1 &&
+             this->map[y - 1][x] && this->map[y + 1][x] && this->map[y][x + 1]) pos = TEXTURE_CELL_SIZE * 13;
 
-    return (SDL_Rect){0, 0, TEXTURE_CELL_SIZE, TEXTURE_CELL_SIZE};
+    else if (y > 0 && y < this->map.size() - 1 && this->map[y - 1][x] && this->map[y + 1][x]) pos = TEXTURE_CELL_SIZE * 9;
+
+    else if (x > 0 && x < this->map[y].size() - 1 && this->map[y][x - 1] && this->map[y][x + 1]) pos = TEXTURE_CELL_SIZE * 6;
+
+    else if (y < this->map[y].size() - 1 && x < this->map[y].size() - 1 && this->map[y + 1][x] && this->map[y][x + 1]) pos = TEXTURE_CELL_SIZE * 5;
+
+    else if (x > 0 && y < this->map.size() - 1 && this->map[y][x - 1] && this->map[y + 1][x]) pos = TEXTURE_CELL_SIZE * 3;
+
+    else if (y > 0 && x < this->map[y].size() - 1 && this->map[y - 1][x] && this->map[y][x + 1]) pos = TEXTURE_CELL_SIZE * 12;
+
+    else if (y > 0 && x > 0 && this->map[y - 1][x] && this->map[y][x - 1]) pos = TEXTURE_CELL_SIZE * 10;
+
+    else if (y > 0 && this->map[y - 1][x]) pos = TEXTURE_CELL_SIZE * 8;
+
+    else if (y < this->map.size() - 1 && this->map[y + 1][x]) pos = TEXTURE_CELL_SIZE * 1;
+
+    else if (x > 0 && this->map[y][x - 1]) pos = TEXTURE_CELL_SIZE * 2;
+
+    else if (x < this->map[y].size() - 1 && this->map[y][x + 1]) pos = TEXTURE_CELL_SIZE * 4;
+
+    return new SDL_Rect({pos, 0, TEXTURE_CELL_SIZE, TEXTURE_CELL_SIZE});
 }

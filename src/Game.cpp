@@ -81,19 +81,6 @@ void Game::generateOutput() {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
     this->map->drawMap(renderer);
-    // SDL_Rect src = {0, 0, 16, 16};
-    // SDL_Rect dest = {0, 0, (int)(CELL_SIZE / 2), (int)(CELL_SIZE / 2)};
-
-    // SDL_Texture* texture = this->getTexture("assets/Map16.png");
-
-    // SDL_RenderCopy(renderer, 
-    //                texture,
-    //                &src,
-    //                &dest);
-
-    for (auto sprite : sprites){
-    }
-
     SDL_RenderPresent(renderer);
 }
 
