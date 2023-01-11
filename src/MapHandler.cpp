@@ -4,11 +4,13 @@
 #include <string>
 #include <iostream>
 
+const unsigned int TEXTURE_CELL_SIZE = 16;
+
 MapHandler::MapHandler(Game *game, std::string filename) : FILENAME(filename),
                                                            game(game)
 {
     this->createMap();
-    this->texture = this->game->getTexture("assets/spritemap-384.png");
+    this->texture = this->game->getTexture("assets/Map16.png");
 }
 
 void MapHandler::createMap() {
@@ -47,10 +49,32 @@ void MapHandler::drawMap(SDL_Renderer* renderer){
 }
 
 void MapHandler::drawWall(SDL_Renderer *renderer, int x, int y, SDL_Color color){
-    scc(SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a));
-    SDL_Rect rect = {static_cast<int>(CELL_SIZE * x), 
-                     static_cast<int>(CELL_SIZE * y), 
-                     CELL_SIZE, 
-                     CELL_SIZE};
-    scc(SDL_RenderFillRect(renderer, &rect));
+    SDL_Rect srcRect = this->getSourceRect(x, y);
+    SDL_Rect destRect = {static_cast<int>(CELL_SIZE * x), 
+                         static_cast<int>(CELL_SIZE * y), 
+                         static_cast<int>(CELL_SIZE / 1), 
+                         static_cast<int>(CELL_SIZE / 1)};
+    scc(SDL_RenderCopy(renderer, this->texture, &srcRect, &destRect));
+}
+
+SDL_Rect MapHandler::getSourceRect(int x, int y){
+    if (y > 0 && y < this->map.size() && this->map[y - 1][x] == 1 && this->map[y + 1][x] == 1)
+        return (SDL_Rect){TEXTURE_CELL_SIZE * 10, 0, TEXTURE_CELL_SIZE, TEXTURE_CELL_SIZE};
+
+    // else if (x > 0 && this->map[y][x - 1] == 1 && this->map[y][x + 1] == 1)
+    //     return (SDL_Rect){TEXTURE_CELL_SIZE * 7, 0, TEXTURE_CELL_SIZE, TEXTURE_CELL_SIZE};
+
+    // else if (this->map[y + 1][x] == 1 && this->map[y][x + 1] == 1)
+    //     return (SDL_Rect){TEXTURE_CELL_SIZE * 6, 0, TEXTURE_CELL_SIZE, TEXTURE_CELL_SIZE};
+
+    // else if (x > 0 && this->map[y][x - 1] == 1 && this->map[y + 1][x] == 1)
+    //     return (SDL_Rect){TEXTURE_CELL_SIZE * 4, 0, TEXTURE_CELL_SIZE, TEXTURE_CELL_SIZE};
+
+    // else if (y > 0 && this->map[y - 1][x] == 1 && this->map[y][x + 1] == 1)
+    //     return (SDL_Rect){TEXTURE_CELL_SIZE * 13, 0, TEXTURE_CELL_SIZE, TEXTURE_CELL_SIZE};
+
+    // else if (y > 0 && x > 0 && this->map[y - 1][x] == 1 && this->map[y][x - 1] == 1)
+    //     return (SDL_Rect){TEXTURE_CELL_SIZE * 11, 0, TEXTURE_CELL_SIZE, TEXTURE_CELL_SIZE};
+
+    return (SDL_Rect){0, 0, TEXTURE_CELL_SIZE, TEXTURE_CELL_SIZE};
 }

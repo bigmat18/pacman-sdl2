@@ -13,6 +13,7 @@ class MapHandler {
     private:
         void createMap();
         void drawWall(SDL_Renderer *renderer, int x, int y, SDL_Color color);
+        SDL_Rect getSourceRect(int x, int y);
 
         std::vector<std::vector<int>> map;
         const std::string FILENAME; 

@@ -12,10 +12,12 @@
         ((hex) >> (1 * 8)) & 0xFF, \
         ((hex) >> (0 * 8)) & 0xFF
 
-const unsigned int NUM_ROW      = 31;
-const unsigned int NUM_COMLUMN  = 28;
+const unsigned int SCALE = 2;
 
-const unsigned int CELL_SIZE   = 16;
+const unsigned int NUM_ROW = 21;
+const unsigned int NUM_COMLUMN  = 19;
+
+const unsigned int CELL_SIZE   = 16 * SCALE;
 
 constexpr int SCREEN_HEIGHT     = CELL_SIZE * NUM_ROW;
 constexpr int SCREEN_WIDTH      = CELL_SIZE * NUM_COMLUMN;
