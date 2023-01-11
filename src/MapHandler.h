@@ -15,7 +15,7 @@ class MapHandler {
         void drawWall(SDL_Renderer *renderer, int x, int y, SDL_Color color);
         SDL_Rect getSourceRect(int x, int y);
 
-        std::vector<std::vector<int>> map;
+        std::vector< std::vector<int> > map;
         const std::string FILENAME; 
         SDL_Texture *texture;
         Game* game;
