@@ -14,10 +14,15 @@ class Actor {
         void addComponent(class Component* component);
         void removeComponent(class Component* component);
 
-    private:
         void updateComponents(float deltaTime);
         virtual void updateActor(float deltaTime);
 
+        const Vector2D getPosition() const { return position; }
+        void setPosition(const Vector2D pos) { position = pos; }
+
+        class Game* getGame() { return game; }
+
+    private:
         Vector2D position;
         float scale;
         std::vector<class Component*> components;
