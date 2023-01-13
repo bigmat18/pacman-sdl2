@@ -88,7 +88,9 @@ void Game::loadData() {
     this->map = new MapHandler(this, "map.txt");
 }
 
-void Game::unloadData() {}
+void Game::unloadData() {
+    delete this->map;
+}
 
 void Game::addActor(Actor* actor) {
     this->actors.emplace_back(actor);

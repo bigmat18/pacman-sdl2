@@ -1,7 +1,7 @@
 #pragma once
 #include <SDL2/SDL.h>
 #include <vector>
-#include <map>
+#include <utility>
 #include <string>
 #include "Global.h"
 
@@ -11,15 +11,16 @@
 class MapHandler {
     public:
         MapHandler(class Game* game, std::string filename);
+        ~MapHandler();
         void drawMap(SDL_Renderer* renderer);
     private:
         void createMapMatrix();
-        void createReactsMatrix();
+        void createRectsMatrix();
         void drawWall(SDL_Renderer *renderer, int x, int y, SDL_Color color);
         SDL_Rect* getSourceRect(int x, int y);
 
         std::vector< std::vector<int> > map;
-        std::map<Vector2D, SDL_Rect*> rects;
+        std::vector< std::vector<SDL_Rect *> > rects;
         const std::string FILENAME; 
         SDL_Texture *texture;
         Game* game;
