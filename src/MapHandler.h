@@ -14,9 +14,19 @@ class MapHandler {
         ~MapHandler();
         void drawMap(SDL_Renderer* renderer);
     private:
+        enum MapType {
+            WALL = 1,
+            FOOD = 2,
+            BIG_FOOD = 3,
+            DOOR = 4
+        } typedef MapType;
+
         void createMapMatrix();
         void createRectsMatrix();
-        void drawWall(SDL_Renderer *renderer, int x, int y, SDL_Color color);
+
+        void drawWall(SDL_Renderer *renderer, int x, int y);
+        void drawElement(SDL_Renderer *renderer, int x, int y, int textureX, int textureY);
+
         SDL_Rect* getSourceRect(int x, int y);
 
         std::vector< std::vector<int> > map;

@@ -59,8 +59,20 @@ void MapHandler::drawMap(SDL_Renderer* renderer){
     for(int i=0; i<this->map.size(); i++){
         for(int j=0; j<this->map[i].size(); j++){
             switch(this->map[i][j]){
-                case 1: {
-                    this->drawWall(renderer, j, i, (SDL_Color){HEX_COLOR(MAP_COLOR)});
+                case MapType::WALL: {
+                    this->drawWall(renderer, j, i);
+                    break;
+                }
+                case MapType::DOOR: {
+                    this->drawElement(renderer, j, i, TEXTURE_CELL_SIZE * 2, TEXTURE_CELL_SIZE);
+                    break;
+                }
+                case MapType::FOOD: {
+                    this->drawElement(renderer, j, i, 0, TEXTURE_CELL_SIZE);
+                    break;
+                }
+                case MapType::BIG_FOOD: {
+                    this->drawElement(renderer, j, i, TEXTURE_CELL_SIZE, TEXTURE_CELL_SIZE);
                     break;
                 }
                 default: {
@@ -71,12 +83,21 @@ void MapHandler::drawMap(SDL_Renderer* renderer){
     }
 }
 
-void MapHandler::drawWall(SDL_Renderer *renderer, int x, int y, SDL_Color color){
+void MapHandler::drawWall(SDL_Renderer *renderer, int x, int y){
     SDL_Rect destRect = {static_cast<int>(CELL_SIZE * x), 
                          static_cast<int>(CELL_SIZE * y), 
                          static_cast<int>(CELL_SIZE), 
                          static_cast<int>(CELL_SIZE)};
     scc(SDL_RenderCopy(renderer, this->texture, this->rects[y][x], &destRect));
+}
+
+void MapHandler::drawElement(SDL_Renderer *renderer, int x, int y, int textureX, int textureY){
+    SDL_Rect srcRect = {textureX, textureY, TEXTURE_CELL_SIZE, TEXTURE_CELL_SIZE};
+    SDL_Rect destRect = {static_cast<int>(CELL_SIZE * x),
+                         static_cast<int>(CELL_SIZE * y),
+                         static_cast<int>(CELL_SIZE),
+                         static_cast<int>(CELL_SIZE)};
+    scc(SDL_RenderCopy(renderer, this->texture, &srcRect, &destRect));
 }
 
 SDL_Rect* MapHandler::getSourceRect(int x, int y){
