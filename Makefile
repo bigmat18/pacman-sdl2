@@ -7,4 +7,4 @@ LINKER_FLAGS = -lSDL2 -lSDL2_image
 OBJ_NAME = pacman
 
 main:
-	$(CC) -g -o $(OBJ_NAME) $(INCLUDE_PATHS) $(LIBRARY_PATHS) $(COMPILER_FLAGS) $(LINKER_FLAGS) $(OBJS)
+	$(CC) -g -o $(OBJ_NAME) $(INCLUDE_PATHS) $(LIBRARY_PATHS) $(COMPILER_FLAGS) $(LINKER_FLAGS) $(OBJS) src/actors/*.cpp src/components/*.cpp

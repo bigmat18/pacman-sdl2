@@ -11,14 +11,15 @@ class SpriteComponent : public Component {
         ~SpriteComponent();
 
         virtual void draw(SDL_Renderer* renderer);
-        virtual void setTexture(SDL_Texture* texture);
-
+        void setTexture(SDL_Texture* texture) { this->texture = texture; }
+        
         int getDrawOrder() const { return drawOrder; }
         int getTexHeight() const { return height; }
         int getTexWidth() const { return width; }
 
     protected:
         SDL_Texture* texture;
+        SDL_Rect* sourceRect;
         int drawOrder;
         int width;
         int height;

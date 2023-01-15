@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "MapHandler.h"
 #include "actors/Actor.h"
+#include "actors/Pacman.h"
 #include "components/SpriteComponent.h"
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL.h>
@@ -76,17 +77,26 @@ void Game::updateGame() {
 
     if (deltaTime > 0.05f)
         deltaTime = 0.05f;
+
+    for (auto actor : this->actors){
+        actor->update(deltaTime);
+    }
 }
 
 void Game::generateOutput() {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
-    //this->map->drawMap(renderer);
+    this->map->drawMap(renderer);
+
+    for(auto sprite : this->sprites) 
+        sprite->draw(this->renderer);
+
     SDL_RenderPresent(renderer);
 }
 
 void Game::loadData() {
     this->map = new MapHandler(this, "map.txt");
+    new Pacman(this);
 }
 
 void Game::unloadData() {

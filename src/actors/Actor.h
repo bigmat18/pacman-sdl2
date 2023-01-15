@@ -22,7 +22,7 @@ class Actor {
 
         class Game* getGame() { return game; }
 
-    private:
+    protected:
         Vector2D position;
         std::vector<class Component*> components;
         class Game* game;

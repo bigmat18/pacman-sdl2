@@ -4,8 +4,6 @@
 #include <string>
 #include <iostream>
 
-const unsigned int TEXTURE_CELL_SIZE = 16;
-
 MapHandler::MapHandler(Game *game, std::string filename) : FILENAME(filename),
                                                            game(game)
 {

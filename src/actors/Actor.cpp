@@ -4,7 +4,6 @@
 #include "../components/Component.h"
 
 Actor::Actor(Game* game): position((Vector2D){0.0f, 0.0f}),
-                          scale(1.0f),
                           game(game)
 {game->addActor(this);}
 
@@ -29,3 +28,18 @@ void Actor::updateComponents(float deltaTime) {
 void Actor::updateActor(float deltaTime) {}
 
 
+void Actor::addComponent(Component *component) {
+    int myOrder = component->getUpdateOrder();
+    auto iter = this->components.begin();
+    for (;iter != this->components.end();++iter){
+        if (myOrder < (*iter)->getUpdateOrder()){
+            break;
+        }
+    }
+    this->components.insert(iter, component);
+}
+
+void Actor::removeComponent(Component *component){
+    auto iter = std::find(this->components.begin(), this->components.end(), component);
+    if (iter != this->components.end()) this->components.erase(iter);
+}
