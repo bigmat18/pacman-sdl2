@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "MapHandler.h"
 #include "actors/Actor.h"
+#include "components/SpriteComponent.h"
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL.h>
 #include <iostream>
@@ -80,7 +81,7 @@ void Game::updateGame() {
 void Game::generateOutput() {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
-    this->map->drawMap(renderer);
+    //this->map->drawMap(renderer);
     SDL_RenderPresent(renderer);
 }
 
@@ -121,4 +122,20 @@ SDL_Texture *Game::getTexture(const std::string &fileName){
         this->textures.emplace(fileName.c_str(), texture);
     }
     return texture;
+}
+
+void Game::addSprite(SpriteComponent* sprite){
+    int drawOrder = sprite->getDrawOrder();
+    auto iter = sprites.begin();
+    for (;iter != sprites.end(); ++iter){
+        if (drawOrder < (*iter)->getDrawOrder()){
+            break;
+        }
+    }
+    this->sprites.insert(iter, sprite);
+}
+
+void Game::removeSprite(SpriteComponent *sprite){
+    auto iter = std::find(this->sprites.begin(), this->sprites.end(), sprite);
+    this->sprites.erase(iter);
 }

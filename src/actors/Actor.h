@@ -24,7 +24,6 @@ class Actor {
 
     private:
         Vector2D position;
-        float scale;
         std::vector<class Component*> components;
         class Game* game;
 };

@@ -9,7 +9,7 @@ class Component {
         virtual ~Component();
         virtual void update(float deltaTime);
         
-    private:
+    protected:
         class Actor* owner;
         int updateOrder;
 
