@@ -64,6 +64,7 @@ void Game::processInput() {
     }
     const Uint8 *state = SDL_GetKeyboardState(NULL);
     if (state[SDL_SCANCODE_ESCAPE]) isRunning = false;
+    this->pacman->proccessKeyboard(state);
 }
 
 void Game::updateGame() {
@@ -96,7 +97,7 @@ void Game::generateOutput() {
 
 void Game::loadData() {
     this->map = new MapHandler(this, "map.txt");
-    new Pacman(this);
+    this->pacman = new Pacman(this);
 }
 
 void Game::unloadData() {

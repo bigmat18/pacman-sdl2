@@ -38,6 +38,7 @@ class Game {
         SDL_Renderer *renderer;
         Uint32 ticksCount;
         bool isRunning;
+        class Pacman* pacman;
 };
 
 #endif

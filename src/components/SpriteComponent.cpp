@@ -21,7 +21,12 @@ void SpriteComponent::draw(SDL_Renderer* renderer){
             static_cast<int>(this->width),
             static_cast<int>(this->height)
         };
-
-        SDL_RenderCopy(renderer, this->texture, this->sourceRect, &rect);
+        SDL_RenderCopyEx(renderer, 
+                         this->texture, 
+                         this->sourceRect, 
+                         &rect, 
+                         this->owner->getRotation(), 
+                         nullptr, 
+                         SDL_FLIP_NONE);
     }
 }

@@ -3,8 +3,9 @@
 #include "../Global.h"
 #include "../components/Component.h"
 
-Actor::Actor(Game* game): position((Vector2D){0.0f, 0.0f}),
-                          game(game)
+Actor::Actor(Game *game) : position((Vector2D){0.0f, 0.0f}),
+                           game(game),
+                           rotation(0)
 {game->addActor(this);}
 
 

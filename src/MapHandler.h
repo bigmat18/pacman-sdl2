@@ -24,15 +24,15 @@ class MapHandler {
         void createMapMatrix();
         void createRectsMatrix();
 
-        void drawWall(SDL_Renderer *renderer, int x, int y);
-        void drawElement(SDL_Renderer *renderer, int x, int y, int textureX, int textureY);
+        void drawWall(SDL_Renderer* renderer, int x, int y);
+        void drawElement(SDL_Renderer* renderer, int x, int y, int textureX, int textureY);
 
         SDL_Rect* getSourceRect(int x, int y);
 
         std::vector< std::vector<int> > map;
-        std::vector< std::vector<SDL_Rect *> > rects;
+        std::vector< std::vector<SDL_Rect*> > rects;
         const std::string FILENAME; 
-        SDL_Texture *texture;
-        Game* game;
+        SDL_Texture* texture;
+        class Game* game;
 };
 #endif

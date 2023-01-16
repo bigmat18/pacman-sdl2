@@ -26,15 +26,23 @@ void Pacman::updateActor(float deltaTime) {
 
     switch (this->currentDiraction) {
         case Diraction::DOWN: {
+            position.y += 300.0f * deltaTime;
+            this->setRotation(90);
             break;
         }
         case Diraction::UP: {
+            position.y -= 300.0f * deltaTime;
+            this->setRotation(270);
             break;
         }
         case Diraction::LEFT: {
+            position.x -= 250.0f * deltaTime;
+            this->setRotation(180);
             break;
         }
         case Diraction::RIGHT: {
+            position.x += 250.0f * deltaTime;
+            this->setRotation(0);
             break;
         }
         default:

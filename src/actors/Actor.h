@@ -22,10 +22,14 @@ class Actor {
 
         class Game* getGame() { return game; }
 
+        void setRotation(int rotation) { if(rotation <= 360 && rotation >= 0) this->rotation = rotation; } 
+        int getRotation() const { return this->rotation; }
+
     protected:
         Vector2D position;
         std::vector<class Component*> components;
         class Game* game;
+        int rotation;
 };
 
 #endif
