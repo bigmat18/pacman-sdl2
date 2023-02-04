@@ -26,22 +26,46 @@ void Pacman::updateActor(float deltaTime) {
 
     switch (this->currentDiraction) {
         case Diraction::DOWN: {
-            position.y += 300.0f * deltaTime;
+            float y = position.y + 300.0f * deltaTime;
+            if(game->map->getMapFromXY(static_cast<int>(floor(position.x / CELL_SIZE)), 
+                                       static_cast<int>(floor((y + CELL_SIZE) / CELL_SIZE))) != 1){
+                position.y = y;
+            } else {
+                position.y += ((floor((position.y + CELL_SIZE - 0.1) / CELL_SIZE) + 1) * CELL_SIZE) - (position.y + CELL_SIZE);
+            }
             this->setRotation(90);
             break;
         }
         case Diraction::UP: {
-            position.y -= 300.0f * deltaTime;
+            float y = position.y - 300.0f * deltaTime;
+            if (game->map->getMapFromXY(static_cast<int>(floor(position.x / CELL_SIZE)), 
+                                        static_cast<int>(floor((y - CELL_SIZE) / CELL_SIZE))) != 1){
+                position.y = y;
+            } else {
+                position.y -= ((floor((position.y - CELL_SIZE + 0.1) / CELL_SIZE) - 1) * CELL_SIZE) + (position.y - CELL_SIZE);
+            }
             this->setRotation(270);
             break;
         }
         case Diraction::LEFT: {
-            position.x -= 250.0f * deltaTime;
+            float x = position.x - 250.0f * deltaTime;
+            if (game->map->getMapFromXY(static_cast<int>(floor((x - CELL_SIZE) / CELL_SIZE)), 
+                                        static_cast<int>(floor(position.y / CELL_SIZE))) != 1){
+                position.x = x;
+            } else {
+                position.x -= ((floor((position.x - CELL_SIZE + 0.1) / CELL_SIZE) - 1) * CELL_SIZE) + (position.x - CELL_SIZE);
+            }
             this->setRotation(180);
             break;
         }
         case Diraction::RIGHT: {
-            position.x += 250.0f * deltaTime;
+            float x = position.x + 250.0f * deltaTime;
+            if (game->map->getMapFromXY(static_cast<int>(floor((x + CELL_SIZE) / CELL_SIZE)), 
+                                        static_cast<int>(floor(position.y / CELL_SIZE))) != 1){
+                position.x = x;
+            } else {
+                position.x += ((floor((position.x + CELL_SIZE - 0.1) / CELL_SIZE) + 1) * CELL_SIZE) - (position.x + CELL_SIZE);
+            }
             this->setRotation(0);
             break;
         }

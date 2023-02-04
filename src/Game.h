@@ -24,6 +24,7 @@ class Game {
         void unloadData();
         SDL_Texture* getTexture(const std::string &fileName);
 
+        MapHandler *map;
     private: 
         void processInput();
         void updateGame();
@@ -33,7 +34,6 @@ class Game {
         std::vector<class Actor*> actors;
         std::vector<class SpriteComponent*> sprites;
         
-        MapHandler *map;
         SDL_Window *window;
         SDL_Renderer *renderer;
         Uint32 ticksCount;

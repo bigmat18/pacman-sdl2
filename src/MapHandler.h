@@ -13,6 +13,8 @@ class MapHandler {
         MapHandler(class Game* game, std::string filename);
         ~MapHandler();
         void drawMap(SDL_Renderer* renderer);
+        int getMapFromXY(const int x, const int y) const {return this->map[y][x];}
+        
     private:
         enum MapType {
             WALL = 1,
