@@ -26,7 +26,7 @@ void Pacman::updateActor(float deltaTime) {
 
     switch (this->currentDiraction) {
         case Diraction::DOWN: {
-            float y = position.y + 300.0f * deltaTime;
+            float y = position.y + 250.0f * deltaTime;
             if(game->map->getMapFromXY(static_cast<int>(floor(position.x / CELL_SIZE)), 
                                        static_cast<int>(floor((y + CELL_SIZE) / CELL_SIZE))) != 1){
                 position.y = y;
@@ -37,23 +37,23 @@ void Pacman::updateActor(float deltaTime) {
             break;
         }
         case Diraction::UP: {
-            float y = position.y - 300.0f * deltaTime;
+            float y = position.y - 250.0f * deltaTime;
             if (game->map->getMapFromXY(static_cast<int>(floor(position.x / CELL_SIZE)), 
-                                        static_cast<int>(floor((y - CELL_SIZE) / CELL_SIZE))) != 1){
+                                        static_cast<int>(floor(y / CELL_SIZE))) != 1){
                 position.y = y;
             } else {
-                position.y -= ((floor((position.y - CELL_SIZE + 0.1) / CELL_SIZE) - 1) * CELL_SIZE) + (position.y - CELL_SIZE);
+                position.y -= position.y - ((ceil((position.y + 0.1) / CELL_SIZE) - 1) * CELL_SIZE);
             }
             this->setRotation(270);
             break;
         }
         case Diraction::LEFT: {
             float x = position.x - 250.0f * deltaTime;
-            if (game->map->getMapFromXY(static_cast<int>(floor((x - CELL_SIZE) / CELL_SIZE)), 
+            if (game->map->getMapFromXY(static_cast<int>(floor(x / CELL_SIZE)), 
                                         static_cast<int>(floor(position.y / CELL_SIZE))) != 1){
                 position.x = x;
             } else {
-                position.x -= ((floor((position.x - CELL_SIZE + 0.1) / CELL_SIZE) - 1) * CELL_SIZE) + (position.x - CELL_SIZE);
+                position.x -= position.x - ((ceil((position.x + 0.1) / CELL_SIZE) - 1) * CELL_SIZE);
             }
             this->setRotation(180);
             break;
