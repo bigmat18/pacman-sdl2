@@ -2,6 +2,7 @@
 #include "../Global.h"
 #include "../components/AnimSpriteComponent.h"
 #include "../Game.h"
+#include <iostream>
 
 Pacman::Pacman(Game *game) : Actor(game),
                              currentDiraction(Diraction::IDLE) 
@@ -26,8 +27,11 @@ void Pacman::updateActor(float deltaTime) {
 
     switch (this->currentDiraction) {
         case Diraction::DOWN: {
-            float y = position.y + 250.0f * deltaTime;
+            float y = position.y + 150.0f * deltaTime;
+
             if(game->map->getMapFromXY(static_cast<int>(floor(position.x / CELL_SIZE)), 
+                                       static_cast<int>(floor((y + CELL_SIZE) / CELL_SIZE))) != 1 &&
+               game->map->getMapFromXY(static_cast<int>(floor((position.x + CELL_SIZE - 0.1) / CELL_SIZE)), 
                                        static_cast<int>(floor((y + CELL_SIZE) / CELL_SIZE))) != 1){
                 position.y = y;
             } else {
@@ -37,8 +41,11 @@ void Pacman::updateActor(float deltaTime) {
             break;
         }
         case Diraction::UP: {
-            float y = position.y - 250.0f * deltaTime;
+            float y = position.y - 150.0f * deltaTime;
+
             if (game->map->getMapFromXY(static_cast<int>(floor(position.x / CELL_SIZE)), 
+                                        static_cast<int>(floor(y / CELL_SIZE))) != 1 &&
+                game->map->getMapFromXY(static_cast<int>(floor((position.x + CELL_SIZE - 0.1) / CELL_SIZE)), 
                                         static_cast<int>(floor(y / CELL_SIZE))) != 1){
                 position.y = y;
             } else {
@@ -48,9 +55,12 @@ void Pacman::updateActor(float deltaTime) {
             break;
         }
         case Diraction::LEFT: {
-            float x = position.x - 250.0f * deltaTime;
+            float x = position.x - 150.0f * deltaTime;
+            
             if (game->map->getMapFromXY(static_cast<int>(floor(x / CELL_SIZE)), 
-                                        static_cast<int>(floor(position.y / CELL_SIZE))) != 1){
+                                        static_cast<int>(floor(position.y / CELL_SIZE))) != 1 &&
+                game->map->getMapFromXY(static_cast<int>(floor(x / CELL_SIZE)), 
+                                        static_cast<int>(floor((position.y + CELL_SIZE - 0.1) / CELL_SIZE))) != 1){
                 position.x = x;
             } else {
                 position.x -= position.x - ((ceil((position.x + 0.1) / CELL_SIZE) - 1) * CELL_SIZE);
@@ -59,9 +69,12 @@ void Pacman::updateActor(float deltaTime) {
             break;
         }
         case Diraction::RIGHT: {
-            float x = position.x + 250.0f * deltaTime;
-            if (game->map->getMapFromXY(static_cast<int>(floor((x + CELL_SIZE) / CELL_SIZE)), 
-                                        static_cast<int>(floor(position.y / CELL_SIZE))) != 1){
+            float x = position.x + 150.0f * deltaTime;
+
+            if(game->map->getMapFromXY(static_cast<int>(floor((x + CELL_SIZE) / CELL_SIZE)),
+                                       static_cast<int>(floor(position.y / CELL_SIZE))) != 1 && 
+               game->map->getMapFromXY(static_cast<int>(floor((x + CELL_SIZE) / CELL_SIZE)),
+                                       static_cast<int>(floor((position.y + CELL_SIZE - 0.1) / CELL_SIZE))) != 1){
                 position.x = x;
             } else {
                 position.x += ((floor((position.x + CELL_SIZE - 0.1) / CELL_SIZE) + 1) * CELL_SIZE) - (position.x + CELL_SIZE);
@@ -85,4 +98,8 @@ void Pacman::proccessKeyboard(const uint8_t *state){
         this->currentDiraction = Diraction::DOWN;
     if (state[SDL_SCANCODE_W]) 
         this->currentDiraction = Diraction::UP;
+}
+
+bool Pacman::checkCollision(Vector2D position){
+
 }

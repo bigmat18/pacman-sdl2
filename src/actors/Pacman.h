@@ -19,6 +19,7 @@ class Pacman : public Actor {
             IDLE
         } typedef Diraction;
 
+        bool checkCollision(Vector2D position);
         Diraction currentDiraction;
 };
 
