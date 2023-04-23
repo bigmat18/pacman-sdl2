@@ -15,7 +15,7 @@ class MapHandler {
         void drawMap(SDL_Renderer* renderer);
         int getMapFromXY(const int x, const int y) const {return this->map[y][x];}
         
-    private:
+    private: 
         enum MapType {
             WALL = 1,
             FOOD = 2,
@@ -23,16 +23,22 @@ class MapHandler {
             DOOR = 4
         } typedef MapType;
 
+        typedef struct {
+            int x;
+            int y;
+            SDL_Rect* rect;
+            MapType type;
+        } Element;
+
         void createMapMatrix();
-        void createRectsMatrix();
+        void createElementsMatrix();
 
-        void drawWall(SDL_Renderer* renderer, int x, int y);
-        void drawElement(SDL_Renderer* renderer, int x, int y, int textureX, int textureY);
-
-        SDL_Rect* getSourceRect(int x, int y);
+        void drawElement(SDL_Renderer *renderer, int x, int y, SDL_Rect *srcRect);
+        SDL_Rect* getSourceRect(int x, int y, MapType type);
 
         std::vector< std::vector<int> > map;
-        std::vector< std::vector<SDL_Rect*> > rects;
+        std::vector< Element* > elements;
+
         const std::string FILENAME; 
         SDL_Texture* texture;
         class Game* game;
