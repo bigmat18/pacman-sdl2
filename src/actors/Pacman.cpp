@@ -42,23 +42,31 @@ bool Pacman::hasCollision(Vector2D position){
     for(int i = 0; i<this->game->map->elements.size(); i++){
         if(this->game->map->elements[i]->type != 1) continue;
 
-        if((this->game->map->elements[i]->x * CELL_SIZE) < position.x + TEXTURE_CELL_SIZE &&
-           (this->game->map->elements[i]->y * CELL_SIZE) > position.y){
+        if ((this->game->map->elements[i]->x * CELL_SIZE) <= position.x + TEXTURE_CELL_SIZE &&
+            (this->game->map->elements[i]->x * CELL_SIZE + TEXTURE_CELL_SIZE) >= position.x + TEXTURE_CELL_SIZE &&
+            (this->game->map->elements[i]->y * CELL_SIZE) <= position.y &&
+            (this->game->map->elements[i]->y * CELL_SIZE + TEXTURE_CELL_SIZE) >= position.y){
             return true;
         }
 
-        if((this->game->map->elements[i]->x * CELL_SIZE) < position.x &&
-           (this->game->map->elements[i]->y * CELL_SIZE) > position.y){
+        if((this->game->map->elements[i]->x * CELL_SIZE) <= position.x &&
+           (this->game->map->elements[i]->x * CELL_SIZE + TEXTURE_CELL_SIZE) >= position.x &&
+           (this->game->map->elements[i]->y * CELL_SIZE) <= position.y && 
+           (this->game->map->elements[i]->y * CELL_SIZE + TEXTURE_CELL_SIZE) >= position.y){
             return true;
         }
 
-        if((this->game->map->elements[i]->x * CELL_SIZE) < position.x + TEXTURE_CELL_SIZE &&
-           (this->game->map->elements[i]->y * CELL_SIZE) > position.y + TEXTURE_CELL_SIZE){
+        if((this->game->map->elements[i]->x * CELL_SIZE) <= position.x + TEXTURE_CELL_SIZE &&
+           (this->game->map->elements[i]->x * CELL_SIZE + TEXTURE_CELL_SIZE) >= position.x + TEXTURE_CELL_SIZE &&
+           (this->game->map->elements[i]->y * CELL_SIZE) <= position.y + TEXTURE_CELL_SIZE && 
+           (this->game->map->elements[i]->y * CELL_SIZE + TEXTURE_CELL_SIZE) >= position.y + TEXTURE_CELL_SIZE){
             return true;
         }
 
-        if((this->game->map->elements[i]->x * CELL_SIZE) < position.x &&
-           (this->game->map->elements[i]->y * CELL_SIZE) > position.y + TEXTURE_CELL_SIZE){
+        if((this->game->map->elements[i]->x * CELL_SIZE) <= position.x &&
+           (this->game->map->elements[i]->x * CELL_SIZE + TEXTURE_CELL_SIZE) >= position.x &&
+           (this->game->map->elements[i]->y * CELL_SIZE) <= position.y + TEXTURE_CELL_SIZE && 
+           (this->game->map->elements[i]->y * CELL_SIZE + TEXTURE_CELL_SIZE) >= position.y + TEXTURE_CELL_SIZE){
             return true;
         }
     }
