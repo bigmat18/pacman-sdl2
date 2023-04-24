@@ -96,7 +96,7 @@ void Pacman::updatePosition(float deltaTime){
                 this->setRotation(180);
                 this->preDiraction = this->currentDiraction;
             } else {
-                position.x -= position.x - (collision->y + CELL_SIZE);
+                position.x -= position.x - (collision->x + CELL_SIZE);
                 this->currentDiraction = this->preDiraction;
             }
             break;
