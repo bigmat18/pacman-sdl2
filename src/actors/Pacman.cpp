@@ -42,33 +42,40 @@ bool Pacman::hasCollision(Vector2D position){
     for(int i = 0; i<this->game->map->elements.size(); i++){
         if(this->game->map->elements[i]->type != 1) continue;
 
-        if ((this->game->map->elements[i]->x * CELL_SIZE) <= position.x + TEXTURE_CELL_SIZE &&
-            (this->game->map->elements[i]->x * CELL_SIZE + TEXTURE_CELL_SIZE) >= position.x + TEXTURE_CELL_SIZE &&
-            (this->game->map->elements[i]->y * CELL_SIZE) <= position.y &&
-            (this->game->map->elements[i]->y * CELL_SIZE + TEXTURE_CELL_SIZE) >= position.y){
+        if ((this->game->map->elements[i]->x * CELL_SIZE) < (position.x + CELL_SIZE) &&
+            (this->game->map->elements[i]->x * CELL_SIZE) + CELL_SIZE > position.x &&
+            (this->game->map->elements[i]->y * CELL_SIZE) < (position.y + CELL_SIZE) &&
+            (this->game->map->elements[i]->y * CELL_SIZE) + CELL_SIZE > position.y){
             return true;
         }
 
-        if((this->game->map->elements[i]->x * CELL_SIZE) <= position.x &&
-           (this->game->map->elements[i]->x * CELL_SIZE + TEXTURE_CELL_SIZE) >= position.x &&
-           (this->game->map->elements[i]->y * CELL_SIZE) <= position.y && 
-           (this->game->map->elements[i]->y * CELL_SIZE + TEXTURE_CELL_SIZE) >= position.y){
-            return true;
-        }
+        // if ((this->game->map->elements[i]->x * CELL_SIZE) <= position.x + CELL_SIZE &&
+        //     ((this->game->map->elements[i]->x * CELL_SIZE) + CELL_SIZE) >= position.x + CELL_SIZE &&
+        //     (this->game->map->elements[i]->y * CELL_SIZE) <= position.y &&
+        //     ((this->game->map->elements[i]->y * CELL_SIZE) + CELL_SIZE) >= position.y){
+        //     return true;
+        // }
 
-        if((this->game->map->elements[i]->x * CELL_SIZE) <= position.x + TEXTURE_CELL_SIZE &&
-           (this->game->map->elements[i]->x * CELL_SIZE + TEXTURE_CELL_SIZE) >= position.x + TEXTURE_CELL_SIZE &&
-           (this->game->map->elements[i]->y * CELL_SIZE) <= position.y + TEXTURE_CELL_SIZE && 
-           (this->game->map->elements[i]->y * CELL_SIZE + TEXTURE_CELL_SIZE) >= position.y + TEXTURE_CELL_SIZE){
-            return true;
-        }
+        // if((this->game->map->elements[i]->x * CELL_SIZE) <= position.x &&
+        //    ((this->game->map->elements[i]->x * CELL_SIZE) + CELL_SIZE) >= position.x &&
+        //    (this->game->map->elements[i]->y * CELL_SIZE) <= position.y && 
+        //    ((this->game->map->elements[i]->y * CELL_SIZE) + CELL_SIZE) >= position.y){
+        //     return true;
+        // }
 
-        if((this->game->map->elements[i]->x * CELL_SIZE) <= position.x &&
-           (this->game->map->elements[i]->x * CELL_SIZE + TEXTURE_CELL_SIZE) >= position.x &&
-           (this->game->map->elements[i]->y * CELL_SIZE) <= position.y + TEXTURE_CELL_SIZE && 
-           (this->game->map->elements[i]->y * CELL_SIZE + TEXTURE_CELL_SIZE) >= position.y + TEXTURE_CELL_SIZE){
-            return true;
-        }
+        // if((this->game->map->elements[i]->x * CELL_SIZE) <= position.x + CELL_SIZE &&
+        //    ((this->game->map->elements[i]->x * CELL_SIZE) + CELL_SIZE) >= position.x + CELL_SIZE &&
+        //    (this->game->map->elements[i]->y * CELL_SIZE) <= position.y + CELL_SIZE && 
+        //    ((this->game->map->elements[i]->y * CELL_SIZE) + CELL_SIZE) >= position.y + CELL_SIZE){
+        //     return true;
+        // }
+
+        // if((this->game->map->elements[i]->x * CELL_SIZE) <= position.x &&
+        //    ((this->game->map->elements[i]->x * CELL_SIZE) + CELL_SIZE) >= position.x &&
+        //    (this->game->map->elements[i]->y * CELL_SIZE) <= position.y + CELL_SIZE && 
+        //    ((this->game->map->elements[i]->y * CELL_SIZE) + CELL_SIZE) >= position.y + CELL_SIZE){
+        //     return true;
+        // }
     }
 
     return false;
@@ -80,7 +87,7 @@ void Pacman::updatePosition(float deltaTime){
 
     switch (this->currentDiraction) {
         case Diraction::DOWN: {
-            float y = position.y + 150.0f * deltaTime;
+            float y = position.y + (150.0f * deltaTime);
 
             if(!this->hasCollision((Vector2D){position.x, y})){
                 position.y = y;
@@ -93,7 +100,7 @@ void Pacman::updatePosition(float deltaTime){
             break;
         }
         case Diraction::UP: {
-            float y = position.y - 150.0f * deltaTime;
+            float y = position.y - (150.0f * deltaTime);
 
             if (!this->hasCollision((Vector2D){position.x, y})){
                 position.y = y;
@@ -105,7 +112,7 @@ void Pacman::updatePosition(float deltaTime){
             break;
         }
         case Diraction::LEFT: {
-            float x = position.x - 150.0f * deltaTime;
+            float x = position.x - (150.0f * deltaTime);
 
             if (!this->hasCollision((Vector2D){x, position.y})){
                 position.x = x;
@@ -117,7 +124,7 @@ void Pacman::updatePosition(float deltaTime){
             break;
         }
         case Diraction::RIGHT: {
-            float x = position.x + 150.0f * deltaTime;
+            float x = position.x + (150.0f * deltaTime);
 
             if (!this->hasCollision((Vector2D){x, position.y})){
                 position.x = x;
