@@ -38,7 +38,7 @@ void Pacman::proccessKeyboard(const uint8_t *state){
         this->currentDiraction = Diraction::UP;
 }
 
-bool Pacman::hasCollision(Vector2D position){
+Vector2D* Pacman::hasCollision(Vector2D position){
     for(int i = 0; i<this->game->map->elements.size(); i++){
         if(this->game->map->elements[i]->type != 1) continue;
 
@@ -46,39 +46,12 @@ bool Pacman::hasCollision(Vector2D position){
             (this->game->map->elements[i]->x * CELL_SIZE) + CELL_SIZE > position.x &&
             (this->game->map->elements[i]->y * CELL_SIZE) < (position.y + CELL_SIZE) &&
             (this->game->map->elements[i]->y * CELL_SIZE) + CELL_SIZE > position.y){
-            return true;
+            return new Vector2D({static_cast<float>(this->game->map->elements[i]->x * CELL_SIZE), 
+                                 static_cast<float>(this->game->map->elements[i]->y * CELL_SIZE)});
         }
-
-        // if ((this->game->map->elements[i]->x * CELL_SIZE) <= position.x + CELL_SIZE &&
-        //     ((this->game->map->elements[i]->x * CELL_SIZE) + CELL_SIZE) >= position.x + CELL_SIZE &&
-        //     (this->game->map->elements[i]->y * CELL_SIZE) <= position.y &&
-        //     ((this->game->map->elements[i]->y * CELL_SIZE) + CELL_SIZE) >= position.y){
-        //     return true;
-        // }
-
-        // if((this->game->map->elements[i]->x * CELL_SIZE) <= position.x &&
-        //    ((this->game->map->elements[i]->x * CELL_SIZE) + CELL_SIZE) >= position.x &&
-        //    (this->game->map->elements[i]->y * CELL_SIZE) <= position.y && 
-        //    ((this->game->map->elements[i]->y * CELL_SIZE) + CELL_SIZE) >= position.y){
-        //     return true;
-        // }
-
-        // if((this->game->map->elements[i]->x * CELL_SIZE) <= position.x + CELL_SIZE &&
-        //    ((this->game->map->elements[i]->x * CELL_SIZE) + CELL_SIZE) >= position.x + CELL_SIZE &&
-        //    (this->game->map->elements[i]->y * CELL_SIZE) <= position.y + CELL_SIZE && 
-        //    ((this->game->map->elements[i]->y * CELL_SIZE) + CELL_SIZE) >= position.y + CELL_SIZE){
-        //     return true;
-        // }
-
-        // if((this->game->map->elements[i]->x * CELL_SIZE) <= position.x &&
-        //    ((this->game->map->elements[i]->x * CELL_SIZE) + CELL_SIZE) >= position.x &&
-        //    (this->game->map->elements[i]->y * CELL_SIZE) <= position.y + CELL_SIZE && 
-        //    ((this->game->map->elements[i]->y * CELL_SIZE) + CELL_SIZE) >= position.y + CELL_SIZE){
-        //     return true;
-        // }
     }
 
-    return false;
+    return nullptr;
 }
 
 void Pacman::updatePosition(float deltaTime){
@@ -88,12 +61,14 @@ void Pacman::updatePosition(float deltaTime){
     switch (this->currentDiraction) {
         case Diraction::DOWN: {
             float y = position.y + (150.0f * deltaTime);
+            Vector2D* collision = this->hasCollision((Vector2D){position.x, y});
 
-            if(!this->hasCollision((Vector2D){position.x, y})){
+            if(!collision){
                 position.y = y;
                 this->setRotation(90);
                 this->preDiraction = this->currentDiraction;
             } else {
+                position.y += collision->y - (position.y + CELL_SIZE);
                 this->currentDiraction = this->preDiraction;
             }
 
@@ -101,36 +76,40 @@ void Pacman::updatePosition(float deltaTime){
         }
         case Diraction::UP: {
             float y = position.y - (150.0f * deltaTime);
+            Vector2D* collision = this->hasCollision((Vector2D){position.x, y});
 
-            if (!this->hasCollision((Vector2D){position.x, y})){
+            if (!collision){
                 position.y = y;
                 this->setRotation(270);
                 this->preDiraction = this->currentDiraction;
             } else {
+                position.y -= position.y - (collision->y + CELL_SIZE);
                 this->currentDiraction = this->preDiraction;
             }
             break;
         }
         case Diraction::LEFT: {
             float x = position.x - (150.0f * deltaTime);
-
-            if (!this->hasCollision((Vector2D){x, position.y})){
+            Vector2D* collision = this->hasCollision((Vector2D){x, position.y});
+            if (!collision){
                 position.x = x;
                 this->setRotation(180);
                 this->preDiraction = this->currentDiraction;
             } else {
+                position.x -= position.x - (collision->y + CELL_SIZE);
                 this->currentDiraction = this->preDiraction;
             }
             break;
         }
         case Diraction::RIGHT: {
             float x = position.x + (150.0f * deltaTime);
-
-            if (!this->hasCollision((Vector2D){x, position.y})){
+            Vector2D* collision = this->hasCollision((Vector2D){x, position.y});
+            if (!collision){
                 position.x = x;
                 this->setRotation(0);
                 this->preDiraction = this->currentDiraction;
             } else {
+                position.x += collision->x - (position.x + CELL_SIZE);
                 this->currentDiraction = this->preDiraction;
             }
             break;
