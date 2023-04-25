@@ -60,7 +60,10 @@ void Pacman::updatePosition(float deltaTime){
 
     switch (this->currentDiraction) {
         case Diraction::DOWN: {
-            float y = position.y + 2;
+            float y = floorf(position.y + (150.0f * deltaTime));
+
+            y = ((int)y % 2) == 0 ? y : y + 2 - ((int)y % 2);
+
             Vector2D* collision = this->hasCollision((Vector2D){position.x, y});
 
             if(!collision){
@@ -78,7 +81,10 @@ void Pacman::updatePosition(float deltaTime){
             break;
         }
         case Diraction::UP: {
-            float y = position.y - 2;
+            float y = floorf(position.y - (150.0f * deltaTime));
+
+            y = ((int)y % 2) == 0 ? y : y + 2 - ((int)y % 2);
+
             Vector2D* collision = this->hasCollision((Vector2D){position.x, y});
 
             if (!collision){
@@ -97,7 +103,10 @@ void Pacman::updatePosition(float deltaTime){
             break;
         }
         case Diraction::LEFT: {
-            float x = position.x - 2;
+            float x = floorf(position.x - (150.0f * deltaTime));
+
+            x = ((int)x % 2) == 0 ? x : x + 2 - ((int)x % 2);
+
             Vector2D* collision = this->hasCollision((Vector2D){x, position.y});
             if (!collision){
                 position.x = x;
@@ -115,7 +124,10 @@ void Pacman::updatePosition(float deltaTime){
             break;
         }
         case Diraction::RIGHT: {
-            float x = position.x + 2;
+            float x = floorf(position.x + (150.0f * deltaTime));
+
+            x = ((int)x % 2) == 0 ? x : x + 2 - ((int)x % 2);
+
             Vector2D* collision = this->hasCollision((Vector2D){x, position.y});
             if (!collision){
                 position.x = x;
