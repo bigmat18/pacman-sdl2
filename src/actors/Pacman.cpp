@@ -67,9 +67,12 @@ void Pacman::updatePosition(float deltaTime){
                 position.y = y;
                 this->setRotation(90);
                 this->preDiraction = this->currentDiraction;
-            } else {
+            } else if (currentDiraction == preDiraction){
                 position.y += collision->y - (position.y + CELL_SIZE);
+            } else {
                 this->currentDiraction = this->preDiraction;
+                this->updatePosition(deltaTime);
+                return;
             }
 
             break;
@@ -82,10 +85,15 @@ void Pacman::updatePosition(float deltaTime){
                 position.y = y;
                 this->setRotation(270);
                 this->preDiraction = this->currentDiraction;
-            } else {
+            } else if (currentDiraction == preDiraction){
                 position.y -= position.y - (collision->y + CELL_SIZE);
                 this->currentDiraction = this->preDiraction;
+            } else {
+                this->currentDiraction = this->preDiraction;
+                this->updatePosition(deltaTime);
+                return;
             }
+
             break;
         }
         case Diraction::LEFT: {
@@ -95,10 +103,15 @@ void Pacman::updatePosition(float deltaTime){
                 position.x = x;
                 this->setRotation(180);
                 this->preDiraction = this->currentDiraction;
-            } else {
+            } else if (currentDiraction == preDiraction){
                 position.x -= position.x - (collision->x + CELL_SIZE);
                 this->currentDiraction = this->preDiraction;
+            } else {
+                this->currentDiraction = this->preDiraction;
+                this->updatePosition(deltaTime);
+                return;
             }
+
             break;
         }
         case Diraction::RIGHT: {
@@ -108,10 +121,15 @@ void Pacman::updatePosition(float deltaTime){
                 position.x = x;
                 this->setRotation(0);
                 this->preDiraction = this->currentDiraction;
-            } else {
+            } else if (currentDiraction == preDiraction){
                 position.x += collision->x - (position.x + CELL_SIZE);
                 this->currentDiraction = this->preDiraction;
+            } else {
+                this->currentDiraction = this->preDiraction;
+                this->updatePosition(deltaTime);
+                return;
             }
+
             break;
         }
         default:
