@@ -130,7 +130,9 @@ void Pacman::updatePosition(float deltaTime){
                                                     static_cast<float>(this->game->map->elements[index]->y * CELL_SIZE)};
 
             if (index == -1){
-                position.x = x;
+                if(x <= 0) position.x = SCREEN_WIDTH;
+                else position.x = x;
+
                 this->setRotation(180);
                 this->preDiraction = this->currentDiraction;
             } else if (currentDiraction == preDiraction){
@@ -155,7 +157,9 @@ void Pacman::updatePosition(float deltaTime){
                                                     static_cast<float>(this->game->map->elements[index]->y * CELL_SIZE)};
 
             if (index == -1){
-                position.x = x;
+                if(x >= SCREEN_WIDTH) position.x = 0;
+                else position.x = x;
+
                 this->setRotation(0);
                 this->preDiraction = this->currentDiraction;
             } else if (currentDiraction == preDiraction){
