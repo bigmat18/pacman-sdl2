@@ -36,34 +36,73 @@ void Ghost::updateActor(float deltaTime){
 }
 
 void Ghost::updatePosition(float deltaTime){
-    Vector2D position = this->game->getPacman()->getPosition();
+    Vector2D pacmanPosition = this->game->getPacman()->getPosition();
+    Vector2D ghostPosition = this->getPosition();
+
     MapHandler* map = this->game->getMap();
 
-    float x = floorf(this->getPosition().x) / CELL_SIZE;
-    float y = floorf(this->getPosition().y) / CELL_SIZE;
+    float x = floorf(ghostPosition.x) / CELL_SIZE;
+    float y = floorf(ghostPosition.y) / CELL_SIZE;
 
     Diraction diraction = Diraction::IDLE;
     float max = -1.0f;
 
-    if(map->getMap()[y-1][x] != 1) {
-        float distance = pointDistance(position, (Vector2D){x * CELL_SIZE, y * CELL_SIZE});
-        if(max < distance) {
-            max = distance;
+    if(map->getMap()[floorf(ghostPosition.y - CELL_SIZE) / CELL_SIZE][x] != 1 && this->currentDiraction != Diraction::DOWN) {
+        float distance = pointDistance(pacmanPosition, (Vector2D){x * CELL_SIZE, floorf(ghostPosition.y - CELL_SIZE)});
+        if(max < distance) max = distance; diraction = Diraction::UP;
+    }
+
+    if(map->getMap()[floorf(ghostPosition.y + CELL_SIZE) / CELL_SIZE][x] != 1 && this->currentDiraction != Diraction::UP) {
+        float distance = pointDistance(pacmanPosition, (Vector2D){x * CELL_SIZE, floorf(ghostPosition.y + CELL_SIZE)});
+        if(max < distance) max = distance; diraction = Diraction::DOWN;
+    }
+
+    if(map->getMap()[y][floorf(ghostPosition.x - CELL_SIZE) / CELL_SIZE] != 1 && this->currentDiraction != Diraction::RIGHT) {
+        float distance = pointDistance(pacmanPosition, (Vector2D){floorf(ghostPosition.x - CELL_SIZE), y * CELL_SIZE});
+        if(max < distance) max = distance; diraction = Diraction::LEFT;
+    }
+
+    if(map->getMap()[y][floorf(ghostPosition.x + CELL_SIZE) / CELL_SIZE] != 1 && this->currentDiraction != Diraction::LEFT) {
+        float distance = pointDistance(pacmanPosition, (Vector2D){floorf(ghostPosition.x + CELL_SIZE), y * CELL_SIZE});
+        if(max < distance) max = distance; diraction = Diraction::RIGHT;
+    }
+
+    switch (diraction) {
+        case Diraction::UP: {
+            float y = floorf(ghostPosition.y - (150.0f * deltaTime));
+            y = ((int)y % 2) == 0 ? y : y + 2 - ((int)y % 2);
+
+            ghostPosition.y = y;
+            this->currentDiraction = diraction;
+            break;
         }
+        case Diraction::DOWN: {
+            float y = floorf(ghostPosition.y + (150.0f * deltaTime));
+            y = ((int)y % 2) == 0 ? y : y + 2 - ((int)y % 2);
+
+            ghostPosition.y = y;
+            this->currentDiraction = diraction;
+            break;
+        }
+        case Diraction::LEFT: {
+            float x = floorf(ghostPosition.x - (150.0f * deltaTime));
+            x = ((int)x % 2) == 0 ? x : x + 2 - ((int)x % 2);
+
+            ghostPosition.x = x;
+            this->currentDiraction = diraction;
+            break;
+        }
+        case Diraction::RIGHT: {
+            float x = floorf(ghostPosition.x + (150.0f * deltaTime));
+            x = ((int)x % 2) == 0 ? x : x + 2 - ((int)x % 2);
+
+            ghostPosition.x = x;
+            this->currentDiraction = diraction;
+            break;
+        }
+        default: 
+            break;
     }
 
-    if(map->getMap()[y+1][x] != 1) {
-        float distance = pointDistance(position, (Vector2D){x * CELL_SIZE, y * CELL_SIZE});
-        if(max < distance) max = distance;
-    }
-
-    if(map->getMap()[y][x-1] != 1) {
-        float distance = pointDistance(position, (Vector2D){x * CELL_SIZE, y * CELL_SIZE});
-        if(max < distance) max = distance;
-    }
-
-    if(map->getMap()[y-1][x+1] != 1) {
-        float distance = pointDistance(position, (Vector2D){x * CELL_SIZE, y * CELL_SIZE});
-        if(max < distance) max = distance;
-    }
+    this->setPosition(ghostPosition);
 }

@@ -9,10 +9,10 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 
-Game::Game() : map(nullptr),
-               window(nullptr),
+Game::Game() : window(nullptr),
                renderer(nullptr),
-               isRunning(true) {}
+               isRunning(true), 
+               map(nullptr) {}
 
 bool Game::initialize() {
     scc(SDL_Init(SDL_INIT_VIDEO));
