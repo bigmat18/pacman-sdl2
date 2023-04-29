@@ -3,6 +3,7 @@
 #include "MapHandler.h"
 #include "actors/Actor.h"
 #include "actors/Pacman.h"
+#include "actors/Ghost.h"
 #include "components/SpriteComponent.h"
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL.h>
@@ -98,6 +99,7 @@ void Game::generateOutput() {
 void Game::loadData() {
     this->map = new MapHandler(this, "map.txt");
     this->pacman = new Pacman(this);
+    new Ghost(this);
 }
 
 void Game::unloadData() {

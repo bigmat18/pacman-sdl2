@@ -27,6 +27,7 @@ class MapHandler {
         MapHandler(class Game* game, std::string filename);
         ~MapHandler();
         void drawMap(SDL_Renderer* renderer);
+        std::vector< std::vector<int> > getMap() const { return this->map; }
 
         std::vector<Element *> elements;
     private:

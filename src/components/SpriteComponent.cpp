@@ -8,13 +8,14 @@ SpriteComponent::SpriteComponent(Actor* owner, int drawOrder) : Component(owner)
                                                                 sourceRect(nullptr),
                                                                 drawOrder(drawOrder),
                                                                 width(CELL_SIZE),
-                                                                height(CELL_SIZE)
+                                                                height(CELL_SIZE),
+                                                                active(true)
 { ((Game*)owner->getGame())->addSprite(this); }
 
 SpriteComponent::~SpriteComponent() { owner->getGame()->removeSprite(this); }
 
 void SpriteComponent::draw(SDL_Renderer* renderer){
-    if(texture) {
+    if(texture && active) {
         SDL_Rect rect = {
             static_cast<int>(this->owner->getPosition().x),
             static_cast<int>(this->owner->getPosition().y),

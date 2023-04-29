@@ -41,28 +41,28 @@ void Pacman::proccessKeyboard(const uint8_t *state){
 int Pacman::hasCollision(Vector2D position){
     int indexFood = -1;
 
-    for(int i = 0; i<this->game->map->elements.size(); i++){
+    for(int i = 0; i<this->game->getMap()->elements.size(); i++){
 
-        if (this->game->map->elements[i]->type == 1 &&
-            (this->game->map->elements[i]->x * CELL_SIZE) < (position.x + CELL_SIZE) &&
-            (this->game->map->elements[i]->x * CELL_SIZE) + CELL_SIZE > position.x &&
-            (this->game->map->elements[i]->y * CELL_SIZE) < (position.y + CELL_SIZE) &&
-            (this->game->map->elements[i]->y * CELL_SIZE) + CELL_SIZE > position.y) {
+        if (this->game->getMap()->elements[i]->type == 1 &&
+            (this->game->getMap()->elements[i]->x * CELL_SIZE) < (position.x + CELL_SIZE) &&
+            (this->game->getMap()->elements[i]->x * CELL_SIZE) + CELL_SIZE > position.x &&
+            (this->game->getMap()->elements[i]->y * CELL_SIZE) < (position.y + CELL_SIZE) &&
+            (this->game->getMap()->elements[i]->y * CELL_SIZE) + CELL_SIZE > position.y) {
 
-            if(indexFood != -1) this->game->map->elements.erase(std::next(this->game->map->elements.begin(), indexFood));
+            if(indexFood != -1) this->game->getMap()->elements.erase(std::next(this->game->getMap()->elements.begin(), indexFood));
             return i;
         }
 
-        if ((this->game->map->elements[i]->type == 2 || this->game->map->elements[i]->type == 3) &&
-            ((this->game->map->elements[i]->x * CELL_SIZE) + CELL_SIZE / 4) < (position.x + CELL_SIZE) &&
-            ((this->game->map->elements[i]->x * CELL_SIZE) + CELL_SIZE / 4) + CELL_SIZE / 2 > position.x &&
-            ((this->game->map->elements[i]->y * CELL_SIZE) + CELL_SIZE / 4) < (position.y + CELL_SIZE) &&
-            ((this->game->map->elements[i]->y * CELL_SIZE) + CELL_SIZE / 4) + CELL_SIZE / 2 > position.y){
+        if ((this->game->getMap()->elements[i]->type == 2 || this->game->getMap()->elements[i]->type == 3) &&
+            ((this->game->getMap()->elements[i]->x * CELL_SIZE) + CELL_SIZE / 4) < (position.x + CELL_SIZE) &&
+            ((this->game->getMap()->elements[i]->x * CELL_SIZE) + CELL_SIZE / 4) + CELL_SIZE / 2 > position.x &&
+            ((this->game->getMap()->elements[i]->y * CELL_SIZE) + CELL_SIZE / 4) < (position.y + CELL_SIZE) &&
+            ((this->game->getMap()->elements[i]->y * CELL_SIZE) + CELL_SIZE / 4) + CELL_SIZE / 2 > position.y){
             indexFood = i;
         }
     }
     if (indexFood != -1)
-        this->game->map->elements.erase(std::next(this->game->map->elements.begin(), indexFood));
+        this->game->getMap()->elements.erase(std::next(this->game->getMap()->elements.begin(), indexFood));
 
     return -1;
 }
@@ -78,8 +78,8 @@ void Pacman::updatePosition(float deltaTime){
 
             int index = this->hasCollision((Vector2D){position.x, y});
             Vector2D collision;
-            if (index != -1) collision = (Vector2D){static_cast<float>(this->game->map->elements[index]->x * CELL_SIZE),
-                                                    static_cast<float>(this->game->map->elements[index]->y * CELL_SIZE)};
+            if (index != -1) collision = (Vector2D){static_cast<float>(this->game->getMap()->elements[index]->x * CELL_SIZE),
+                                                    static_cast<float>(this->game->getMap()->elements[index]->y * CELL_SIZE)};
 
             if(index == -1){
                 position.y = y;
@@ -102,8 +102,8 @@ void Pacman::updatePosition(float deltaTime){
 
             int index = this->hasCollision((Vector2D){position.x, y});
             Vector2D collision;
-            if (index != -1) collision = (Vector2D){static_cast<float>(this->game->map->elements[index]->x * CELL_SIZE),
-                                                    static_cast<float>(this->game->map->elements[index]->y * CELL_SIZE)};
+            if (index != -1) collision = (Vector2D){static_cast<float>(this->game->getMap()->elements[index]->x * CELL_SIZE),
+                                                    static_cast<float>(this->game->getMap()->elements[index]->y * CELL_SIZE)};
 
             if (index == -1){
                 position.y = y;
@@ -126,8 +126,8 @@ void Pacman::updatePosition(float deltaTime){
 
             int index = this->hasCollision((Vector2D){x, position.y});
             Vector2D collision;
-            if (index != -1) collision = (Vector2D){static_cast<float>(this->game->map->elements[index]->x * CELL_SIZE),
-                                                    static_cast<float>(this->game->map->elements[index]->y * CELL_SIZE)};
+            if (index != -1) collision = (Vector2D){static_cast<float>(this->game->getMap()->elements[index]->x * CELL_SIZE),
+                                                    static_cast<float>(this->game->getMap()->elements[index]->y * CELL_SIZE)};
 
             if (index == -1){
                 if(x <= 0) position.x = SCREEN_WIDTH;
@@ -153,8 +153,8 @@ void Pacman::updatePosition(float deltaTime){
             int index = this->hasCollision((Vector2D){x, position.y});
 
             Vector2D collision;
-            if (index != -1) collision = (Vector2D){static_cast<float>(this->game->map->elements[index]->x * CELL_SIZE),
-                                                    static_cast<float>(this->game->map->elements[index]->y * CELL_SIZE)};
+            if (index != -1) collision = (Vector2D){static_cast<float>(this->game->getMap()->elements[index]->x * CELL_SIZE),
+                                                    static_cast<float>(this->game->getMap()->elements[index]->y * CELL_SIZE)};
 
             if (index == -1){
                 if(x >= SCREEN_WIDTH) position.x = 0;

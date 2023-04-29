@@ -23,8 +23,9 @@ class Game {
         void loadData();
         void unloadData();
         SDL_Texture* getTexture(const std::string &fileName);
+        class Pacman* getPacman() const { return this->pacman; }
+        MapHandler* getMap() const { return this->map; }
 
-        MapHandler *map;
     private: 
         void processInput();
         void updateGame();
@@ -39,6 +40,7 @@ class Game {
         Uint32 ticksCount;
         bool isRunning;
         class Pacman* pacman;
+        MapHandler *map;
 };
 
 #endif
